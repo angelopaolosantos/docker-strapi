@@ -1,6 +1,7 @@
 version: '3'
 services:
   strapi:
+    container_name: strapi_container
     image: strapi/strapi
     environment:
       DATABASE_CLIENT: postgres
@@ -9,6 +10,7 @@ services:
       DATABASE_PORT: 5432
       DATABASE_USERNAME: strapi
       DATABASE_PASSWORD: strapi
+    user: 1000:1000
     volumes:
       - ./app:/srv/app
     ports:
@@ -17,6 +19,7 @@ services:
       - postgres
 
   postgres:
+    container_name: postgres_container
     image: postgres
     environment:
       POSTGRES_DB: strapi
@@ -24,4 +27,14 @@ services:
       POSTGRES_PASSWORD: strapi
     volumes:
       - ./data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
 
